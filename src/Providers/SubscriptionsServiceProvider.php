@@ -15,7 +15,7 @@ class SubscriptionsServiceProvider extends PackageServiceProvider
     public function configurePackage(Package $package): void
     {
         $package
-            ->name('laravel-subscriptions')
+            ->name('subscriptions')
             ->hasConfigFile('subscriptions')
             ->hasRoute('subscriptions')
             ->hasMigrations([

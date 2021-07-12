@@ -32,8 +32,8 @@ class RollbackCommand extends Command
         $this->alert($this->description);
 
         $path = config('subscriptions.autoload_migrations') ?
-            'vendor/elsayed85/laravel-subscriptions/database/migrations' :
-            'database/migrations/elsayed85/laravel-subscriptions';
+            'vendor/elsayed85/subscriptions/database/migrations' :
+            'database/migrations/elsayed85/subscriptions';
 
         if (file_exists($path)) {
             $this->call('migrate:reset', [
