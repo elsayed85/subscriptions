@@ -16,7 +16,7 @@ class SubscriptionsServiceProvider extends PackageServiceProvider
     {
         $package
             ->name('subscriptions')
-            ->hasConfigFile()
+            ->hasConfigFile('subscriptions')
             ->hasRoute('subscriptions')
             ->hasMigrations([
                 '2020_01_01_000001_create_plans_table',
