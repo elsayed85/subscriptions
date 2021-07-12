@@ -13,7 +13,7 @@ class CreatePlanSubscriptionsTable extends Migration
      */
     public function up(): void
     {
-        Schema::create(config('elsayed85.subscriptions.tables.plan_subscriptions'), function (Blueprint $table) {
+        Schema::create(config('subscriptions.tables.plan_subscriptions'), function (Blueprint $table) {
             $table->id();
             $table->morphs('user');
             $table->unsignedBigInteger('plan_id');
@@ -30,7 +30,7 @@ class CreatePlanSubscriptionsTable extends Migration
 
             // Indexes
             $table->unique('slug');
-            $table->foreign('plan_id')->references('id')->on(config('elsayed85.subscriptions.tables.plans'))
+            $table->foreign('plan_id')->references('id')->on(config('subscriptions.tables.plans'))
                 ->onDelete('cascade')->onUpdate('cascade');
         });
     }
@@ -42,7 +42,7 @@ class CreatePlanSubscriptionsTable extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists(config('elsayed85.subscriptions.tables.plan_subscriptions'));
+        Schema::dropIfExists(config('subscriptions.tables.plan_subscriptions'));
         Schema::dropIfExists(config('plan_subscriptions_translations'));
     }
 }

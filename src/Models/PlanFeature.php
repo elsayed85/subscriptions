@@ -122,9 +122,9 @@ class PlanFeature extends Model implements TranslatableContract
     {
         parent::__construct($attributes);
 
-        $this->setTable(config('elsayed85.subscriptions.tables.plan_features'));
+        $this->setTable(config('subscriptions.tables.plan_features'));
         $this->setRules([
-            'plan_id' => 'required|integer|exists:' . config('elsayed85.subscriptions.tables.plans') . ',id',
+            'plan_id' => 'required|integer|exists:' . config('subscriptions.tables.plans') . ',id',
             'value' => 'required|string',
             'resettable_period' => 'sometimes|integer',
             'resettable_interval' => 'sometimes|in:hour,day,week,month',
@@ -152,7 +152,7 @@ class PlanFeature extends Model implements TranslatableContract
      */
     public function usage(): HasMany
     {
-        return $this->hasMany(config('elsayed85.subscriptions.models.plan_subscription_usage'), 'feature_id', 'id');
+        return $this->hasMany(config('subscriptions.models.plan_subscription_usage'), 'feature_id', 'id');
     }
 
     /**
@@ -160,9 +160,8 @@ class PlanFeature extends Model implements TranslatableContract
      *
      * @param string $dateFrom
      *
-     * @return \Carbon\Carbon
      */
-    public function getResetDate(Carbon $dateFrom): Carbon
+    public function getResetDate(Carbon $dateFrom)
     {
         $period = new Period($this->resettable_interval, $this->resettable_period, $dateFrom ?? now());
 

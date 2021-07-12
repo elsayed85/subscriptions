@@ -38,7 +38,8 @@
     "illuminate/console": "^7.0.0",
     "illuminate/database": "^7.0.0",
     "illuminate/support": "^7.0.0",
-    "rinvex/laravel-support": "^4.0.0"
+    "rinvex/laravel-support": "^4.0.0",
+    "spatie/laravel-package-tools": "^1.9"
   },
   "require-dev": {
     "codedungeon/phpunit-result-printer": "^0.27.0",

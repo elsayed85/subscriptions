@@ -51,7 +51,7 @@ class Period
 
         if (empty($start)) {
             $this->start = Carbon::now();
-        } elseif (! $start instanceof Carbon) {
+        } elseif (!$start instanceof Carbon) {
             $this->start = new Carbon($start);
         } else {
             $this->start = $start;
@@ -62,16 +62,15 @@ class Period
         }
 
         $start = clone $this->start;
-        $method = 'add'.ucfirst($this->interval).'s';
+        $method = 'add' . ucfirst($this->interval) . 's';
         $this->end = $start->{$method}($this->period);
     }
 
     /**
      * Get start date.
      *
-     * @return \Carbon\Carbon
      */
-    public function getStartDate(): Carbon
+    public function getStartDate()
     {
         return $this->start;
     }
@@ -79,9 +78,8 @@ class Period
     /**
      * Get end date.
      *
-     * @return \Carbon\Carbon
      */
-    public function getEndDate(): Carbon
+    public function getEndDate()
     {
         return $this->end;
     }

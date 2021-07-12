@@ -135,7 +135,6 @@ class Plan extends Model implements TranslatableContract
     public $translationForeignKey = "plan_id";
 
 
-
     /**
      * The default rules that the model will validate against.
      *
@@ -160,7 +159,7 @@ class Plan extends Model implements TranslatableContract
     {
         parent::__construct($attributes);
 
-        $this->setTable(config('elsayed85.subscriptions.tables.plans'));
+        $this->setTable(config('subscriptions.tables.plans'));
         $this->setRules([
             'is_active' => 'sometimes|boolean',
             'price' => 'required|numeric',
@@ -200,7 +199,7 @@ class Plan extends Model implements TranslatableContract
      */
     public function features(): HasMany
     {
-        return $this->hasMany(config('elsayed85.subscriptions.models.plan_feature'), 'plan_id', 'id');
+        return $this->hasMany(config('subscriptions.models.plan_feature'), 'plan_id', 'id');
     }
 
     /**
@@ -210,7 +209,7 @@ class Plan extends Model implements TranslatableContract
      */
     public function subscriptions(): HasMany
     {
-        return $this->hasMany(config('elsayed85.subscriptions.models.plan_subscription'), 'plan_id', 'id');
+        return $this->hasMany(config('subscriptions.models.plan_subscription'), 'plan_id', 'id');
     }
 
     /**

@@ -13,7 +13,7 @@ class CreatePlansTable extends Migration
      */
     public function up(): void
     {
-        Schema::create(config('elsayed85.subscriptions.tables.plans'), function (Blueprint $table) {
+        Schema::create(config('subscriptions.tables.plans'), function (Blueprint $table) {
             // Columns
             $table->id();
             $table->string('slug');
@@ -62,7 +62,7 @@ class CreatePlansTable extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists(config('elsayed85.subscriptions.tables.plans'));
+        Schema::dropIfExists(config('subscriptions.tables.plans'));
         Schema::dropIfExists("plan_translations");
     }
 }
