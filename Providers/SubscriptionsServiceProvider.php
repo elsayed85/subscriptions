@@ -23,9 +23,6 @@ class SubscriptionsServiceProvider extends PackageServiceProvider
                 'create_plan_features_table',
                 'create_plan_subscriptions_table',
                 'create_plan_subscription_usage_table'
-            ])
-            ->hasCommand(MigrateCommand::class)
-            ->hasCommand(PublishCommand::class)
-            ->hasCommand(RollbackCommand::class);
+            ]);
     }
 }
