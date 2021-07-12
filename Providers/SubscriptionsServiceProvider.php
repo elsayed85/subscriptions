@@ -19,9 +19,10 @@ class SubscriptionsServiceProvider extends PackageServiceProvider
             ->hasConfigFile('subscriptions')
             ->hasRoute('subscriptions')
             ->hasMigrations([
-                '2020_01_01_000001_create_plans_table',
-                '2020_01_01_000002_create_plan_features_table',
-                '2020_01_01_000004_create_plan_subscription_usage_table'
+                'create_plans_table',
+                'create_plan_features_table',
+                'create_plan_subscriptions_table',
+                'create_plan_subscription_usage_table'
             ])
             ->hasCommand(MigrateCommand::class)
             ->hasCommand(PublishCommand::class)
