@@ -51,7 +51,7 @@
       "database"
     ],
     "psr-4": {
-      "elsayed85\\Subscriptions\\": "src"
+      "elsayed85\\Subscriptions\\": "\\"
     }
   },
   "autoload-dev": {

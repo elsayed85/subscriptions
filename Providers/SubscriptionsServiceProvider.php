@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace elsayed85\Subscriptions\Providers;
+namespace elsayed85\Subscriptions;
 
 use elsayed85\Subscriptions\Console\Commands\MigrateCommand;
 use elsayed85\Subscriptions\Console\Commands\PublishCommand;
