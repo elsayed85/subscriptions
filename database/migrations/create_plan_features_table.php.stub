@@ -14,7 +14,7 @@ class CreatePlanFeaturesTable extends Migration
      */
     public function up(): void
     {
-        Schema::create(config('subscriptions.tables.plan_features'), function (Blueprint $table) {
+        Schema::create(config('tenant_subscriptions.tables.plan_features'), function (Blueprint $table) {
             // Columns
             $table->id();
             $table->unsignedBigInteger('plan_id');
@@ -31,7 +31,7 @@ class CreatePlanFeaturesTable extends Migration
             $table->unique(['plan_id', 'slug']);
             $table->foreign('plan_id')
                 ->references('id')
-                ->on(config('subscriptions.tables.plans'))
+                ->on(config('tenant_subscriptions.tables.plans'))
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
         });
@@ -44,6 +44,6 @@ class CreatePlanFeaturesTable extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists(config('subscriptions.tables.plan_features'));
+        Schema::dropIfExists(config('tenant_subscriptions.tables.plan_features'));
     }
 }

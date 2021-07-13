@@ -123,9 +123,9 @@ class PlanFeature extends Model
     {
         parent::__construct($attributes);
 
-        $this->setTable(config('subscriptions.tables.plan_features'));
+        $this->setTable(config('tenant_subscriptions.tables.plan_features'));
         $this->setRules([
-            'plan_id' => 'required|integer|exists:' . config('subscriptions.tables.plans') . ',id',
+            'plan_id' => 'required|integer|exists:' . config('tenant_subscriptions.tables.plans') . ',id',
             'name' => 'required|string|strip_tags|max:150',
             'description' => 'nullable|string|max:32768',
             'value' => 'required|string',
@@ -155,7 +155,7 @@ class PlanFeature extends Model
      */
     public function usage(): HasMany
     {
-        return $this->hasMany(config('subscriptions.models.plan_subscription_usage'), 'feature_id', 'id');
+        return $this->hasMany(config('tenant_subscriptions.models.plan_subscription_usage'), 'feature_id', 'id');
     }
 
     /**

@@ -157,7 +157,7 @@ class Plan extends Model
     {
         parent::__construct($attributes);
 
-        $this->setTable(config('subscriptions.tables.plans'));
+        $this->setTable(config('tenant_subscriptions.tables.plans'));
         $this->setRules([
             'is_active' => 'sometimes|boolean',
             'price' => 'required|numeric',
@@ -199,7 +199,7 @@ class Plan extends Model
      */
     public function features(): HasMany
     {
-        return $this->hasMany(config('subscriptions.models.plan_feature'), 'plan_id', 'id');
+        return $this->hasMany(config('tenant_subscriptions.models.plan_feature'), 'plan_id', 'id');
     }
 
     /**
@@ -209,7 +209,7 @@ class Plan extends Model
      */
     public function subscriptions(): HasMany
     {
-        return $this->hasMany(config('subscriptions.models.plan_subscription'), 'plan_id', 'id');
+        return $this->hasMany(config('tenant_subscriptions.models.plan_subscription'), 'plan_id', 'id');
     }
 
     /**

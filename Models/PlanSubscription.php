@@ -139,10 +139,10 @@ class PlanSubscription extends Model
     {
         parent::__construct($attributes);
 
-        $this->setTable(config('subscriptions.tables.plan_subscriptions'));
+        $this->setTable(config('tenant_subscriptions.tables.plan_subscriptions'));
         $this->setRules([
             'name' => 'required|string|strip_tags|max:150',
-            'plan_id' => 'required|integer|exists:' . config('subscriptions.tables.plans') . ',id',
+            'plan_id' => 'required|integer|exists:' . config('tenant_subscriptions.tables.plans') . ',id',
             'tenant_id' => 'required|integer',
             'tenant_type' => 'required|string|strip_tags|max:150',
             'trial_ends_at' => 'nullable|date',
@@ -198,7 +198,7 @@ class PlanSubscription extends Model
      */
     public function usage(): hasMany
     {
-        return $this->hasMany(config('subscriptions.models.plan_subscription_usage'), 'subscription_id', 'id');
+        return $this->hasMany(config('tenant_subscriptions.models.plan_subscription_usage'), 'subscription_id', 'id');
     }
 
     /**
