@@ -6,11 +6,10 @@ namespace elsayed85\Subscriptions\Models;
 
 use Astrotomic\Translatable\Contracts\Translatable as TranslatableContract;
 use Astrotomic\Translatable\Translatable;
-use BeyondCode\Vouchers\Traits\CanRedeemVouchers;
-use BeyondCode\Vouchers\Traits\HasVouchers;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Rinvex\Support\Traits\HasTranslations;
 use Rinvex\Support\Traits\ValidatingTrait;
 
 /**
@@ -64,12 +63,11 @@ use Rinvex\Support\Traits\ValidatingTrait;
  * @method static \Illuminate\Database\Eloquent\Builder|\elsayed85\Subscriptions\Models\Plan whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Plan extends Model implements TranslatableContract
+class Plan extends Model
 {
     use Sluggable;
-    use Translatable;
+    use HasTranslations;
     use ValidatingTrait;
-    use HasVouchers;
 
     /**
      * {@inheritdoc}
@@ -77,6 +75,8 @@ class Plan extends Model implements TranslatableContract
     protected $fillable = [
         'is_active',
         'price',
+        'name',
+        'description',
         'signup_fee',
         'currency',
         'trial_period',
@@ -127,12 +127,10 @@ class Plan extends Model implements TranslatableContract
      *
      * @var array
      */
-    public $translatedAttributes  = [
+    public $translatable = [
         'name',
         'description',
     ];
-
-    public $translationForeignKey = "plan_id";
 
 
     /**
@@ -163,6 +161,8 @@ class Plan extends Model implements TranslatableContract
         $this->setRules([
             'is_active' => 'sometimes|boolean',
             'price' => 'required|numeric',
+            'name' => 'required|string|strip_tags|max:150',
+            'description' => 'nullable|string|max:32768',
             'signup_fee' => 'required|numeric',
             'currency' => 'required|alpha|size:3',
             'trial_period' => 'sometimes|integer|max:10000',

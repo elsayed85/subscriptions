@@ -2,9 +2,6 @@
 declare(strict_types=1);
 
 return [
-    // Manage autoload migrations
-    'autoload_migrations' => true,
-
     // Subscriptions Database Tables
     'tables' => [
         'plans' => 'plans',
@@ -20,5 +17,4 @@ return [
         'plan_subscription' => \elsayed85\Subscriptions\Models\PlanSubscription::class,
         'plan_subscription_usage' => \elsayed85\Subscriptions\Models\PlanSubscriptionUsage::class,
     ],
-
 ];

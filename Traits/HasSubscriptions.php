@@ -26,13 +26,13 @@ trait HasSubscriptions
     abstract public function morphMany($related, $name, $type = null, $id = null, $localKey = null);
 
     /**
-     * The user may have many subscriptions.
+     * The tenant may have many subscriptions.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function subscriptions(): MorphMany
     {
-        return $this->morphMany(config('subscriptions.models.plan_subscription'), 'user');
+        return $this->morphMany(config('subscriptions.models.plan_subscription'), 'tenant');
     }
 
     /**
@@ -70,7 +70,7 @@ trait HasSubscriptions
     }
 
     /**
-     * Check if the user subscribed to the given plan.
+     * Check if the tenant subscribed to the given plan.
      *
      * @param int $planId
      *
@@ -84,7 +84,7 @@ trait HasSubscriptions
     }
 
     /**
-     * Subscribe user to a new plan.
+     * Subscribe tenant to a new plan.
      *
      * @param string                            $subscription
      * @param \elsayed85\Subscriptions\Models\Plan $plan

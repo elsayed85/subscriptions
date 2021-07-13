@@ -15,7 +15,7 @@ class CreatePlanSubscriptionsTable extends Migration
     {
         Schema::create(config('subscriptions.tables.plan_subscriptions'), function (Blueprint $table) {
             $table->id();
-            $table->morphs('user');
+            $table->morphs('tenant');
             $table->unsignedBigInteger('plan_id');
             $table->string('name');
             $table->string('slug');
@@ -43,6 +43,5 @@ class CreatePlanSubscriptionsTable extends Migration
     public function down(): void
     {
         Schema::dropIfExists(config('subscriptions.tables.plan_subscriptions'));
-        Schema::dropIfExists(config('plan_subscriptions_translations'));
     }
 }

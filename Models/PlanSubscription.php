@@ -16,14 +16,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use LogicException;
+use Rinvex\Support\Traits\HasTranslations;
 use Rinvex\Support\Traits\ValidatingTrait;
 
 /**
  * elsayed85\Subscriptions\Models\PlanSubscription.
  *
  * @property int                                                                                                $id
- * @property int                                                                                                $user_id
- * @property string                                                                                             $user_type
+ * @property int                                                                                                $tenant_id
+ * @property string                                                                                             $tenant_type
  * @property int                                                                                                $plan_id
  * @property string                                                                                             $slug
  * @property array                                                                                              $title
@@ -38,14 +39,14 @@ use Rinvex\Support\Traits\ValidatingTrait;
  * @property \Carbon\Carbon|null                                                                                $deleted_at
  * @property-read \elsayed85\Subscriptions\Models\Plan                                                             $plan
  * @property-read \Illuminate\Database\Eloquent\Collection|\elsayed85\Subscriptions\Models\PlanSubscriptionUsage[] $usage
- * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent                                                 $user
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent                                                 $tenant
  *
  * @method static \Illuminate\Database\Eloquent\Builder|\elsayed85\Subscriptions\Models\PlanSubscription byPlanId($planId)
  * @method static \Illuminate\Database\Eloquent\Builder|\elsayed85\Subscriptions\Models\PlanSubscription findEndedPeriod()
  * @method static \Illuminate\Database\Eloquent\Builder|\elsayed85\Subscriptions\Models\PlanSubscription findEndedTrial()
  * @method static \Illuminate\Database\Eloquent\Builder|\elsayed85\Subscriptions\Models\PlanSubscription findEndingPeriod($dayRange = 3)
  * @method static \Illuminate\Database\Eloquent\Builder|\elsayed85\Subscriptions\Models\PlanSubscription findEndingTrial($dayRange = 3)
- * @method static \Illuminate\Database\Eloquent\Builder|\elsayed85\Subscriptions\Models\PlanSubscription ofUser(\Illuminate\Database\Eloquent\Model $user)
+ * @method static \Illuminate\Database\Eloquent\Builder|\elsayed85\Subscriptions\Models\PlanSubscription ofTenant(\Illuminate\Database\Eloquent\Model $tenant)
  * @method static \Illuminate\Database\Eloquent\Builder|\elsayed85\Subscriptions\Models\PlanSubscription whereCanceledAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\elsayed85\Subscriptions\Models\PlanSubscription whereCancelsAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\elsayed85\Subscriptions\Models\PlanSubscription whereCreatedAt($value)
@@ -59,8 +60,8 @@ use Rinvex\Support\Traits\ValidatingTrait;
  * @method static \Illuminate\Database\Eloquent\Builder|\elsayed85\Subscriptions\Models\PlanSubscription whereStartsAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\elsayed85\Subscriptions\Models\PlanSubscription whereTrialEndsAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\elsayed85\Subscriptions\Models\PlanSubscription whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\elsayed85\Subscriptions\Models\PlanSubscription whereUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|\elsayed85\Subscriptions\Models\PlanSubscription whereUserType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\elsayed85\Subscriptions\Models\PlanSubscription whereTenantId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\elsayed85\Subscriptions\Models\PlanSubscription whereTenantType($value)
  * @mixin \Eloquent
  */
 class PlanSubscription extends Model
@@ -68,13 +69,15 @@ class PlanSubscription extends Model
     use Sluggable;
     use BelongsToPlan;
     use ValidatingTrait;
+    use HasTranslations;
+
 
     /**
      * {@inheritdoc}
      */
     protected $fillable = [
-        'user_id',
-        'user_type',
+        'tenant_id',
+        'tenant_type',
         'plan_id',
         'slug',
         'name',
@@ -89,8 +92,8 @@ class PlanSubscription extends Model
      * {@inheritdoc}
      */
     protected $casts = [
-        'user_id' => 'integer',
-        'user_type' => 'string',
+        'tenant_id' => 'integer',
+        'tenant_type' => 'string',
         'plan_id' => 'integer',
         'slug' => 'string',
         'trial_ends_at' => 'datetime',
@@ -109,17 +112,7 @@ class PlanSubscription extends Model
         'validated',
     ];
 
-    /**
-     * The attributes that are translatable.
-     *
-     * @var array
-     */
-    public $translatedAttributes  = [
-        'name',
-        'description',
-    ];
 
-    public $translationForeignKey = "subscription_id";
 
 
     /**
@@ -148,15 +141,15 @@ class PlanSubscription extends Model
 
         $this->setTable(config('subscriptions.tables.plan_subscriptions'));
         $this->setRules([
+            'name' => 'required|string|strip_tags|max:150',
             'plan_id' => 'required|integer|exists:' . config('subscriptions.tables.plans') . ',id',
-            'user_id' => 'required|integer',
-            'user_type' => 'required|string|strip_tags|max:150',
+            'tenant_id' => 'required|integer',
+            'tenant_type' => 'required|string|strip_tags|max:150',
             'trial_ends_at' => 'nullable|date',
             'starts_at' => 'required|date',
             'ends_at' => 'required|date',
             'cancels_at' => 'nullable|date',
             'canceled_at' => 'nullable|date',
-            'name' => ['required' , 'string' , 'min:2' , "max:70"]
         ]);
     }
 
@@ -189,13 +182,13 @@ class PlanSubscription extends Model
     }
 
     /**
-     * Get the owning user.
+     * Get the owning tenant.
      *
      * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
-    public function user(): MorphTo
+    public function tenant(): MorphTo
     {
-        return $this->morphTo('user', 'user_type', 'user_id', 'id');
+        return $this->morphTo('tenant', 'tenant_type', 'tenant_id', 'id');
     }
 
     /**
@@ -346,16 +339,19 @@ class PlanSubscription extends Model
     }
 
     /**
-     * Get bookings of the given user.
+     * Get bookings of the given tenant.
      *
      * @param \Illuminate\Database\Eloquent\Builder $builder
-     * @param \Illuminate\Database\Eloquent\Model   $user
+     * @param \Illuminate\Database\Eloquent\Model   $tenant
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeOfUser(Builder $builder, Model $user): Builder
+    public function scopeOfTenant(Builder $builder, Model $tenant): Builder
     {
-        return $builder->where('user_type', $user->getMorphClass())->where('user_id', $user->getKey());
+        return $builder->where([
+            ['tenant_type',  $tenant->getMorphClass()],
+            ['tenant_id', $tenant->getKey()]
+        ]);
     }
 
     /**

@@ -12,6 +12,7 @@ use elsayed85\Subscriptions\Services\Period;
 use elsayed85\Subscriptions\Traits\BelongsToPlan;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Rinvex\Support\Traits\HasTranslations;
 use Rinvex\Support\Traits\ValidatingTrait;
 
 /**
@@ -47,10 +48,10 @@ use Rinvex\Support\Traits\ValidatingTrait;
  * @method static \Illuminate\Database\Eloquent\Builder|\elsayed85\Subscriptions\Models\PlanFeature whereValue($value)
  * @mixin \Eloquent
  */
-class PlanFeature extends Model implements TranslatableContract
+class PlanFeature extends Model
 {
     use Sluggable;
-    use Translatable;
+    use HasTranslations;
     use BelongsToPlan;
     use ValidatingTrait;
 
@@ -60,6 +61,8 @@ class PlanFeature extends Model implements TranslatableContract
     protected $fillable = [
         'plan_id',
         'slug',
+        'name',
+        'description',
         'value',
         'resettable_period',
         'resettable_interval',
@@ -85,17 +88,15 @@ class PlanFeature extends Model implements TranslatableContract
         'validated',
     ];
 
-    /**
+     /**
      * The attributes that are translatable.
      *
      * @var array
      */
-    public $translatedAttributes  = [
+    public $translatable = [
         'name',
         'description',
     ];
-
-    public $translationForeignKey = "feature_id";
 
 
     /**
@@ -125,6 +126,8 @@ class PlanFeature extends Model implements TranslatableContract
         $this->setTable(config('subscriptions.tables.plan_features'));
         $this->setRules([
             'plan_id' => 'required|integer|exists:' . config('subscriptions.tables.plans') . ',id',
+            'name' => 'required|string|strip_tags|max:150',
+            'description' => 'nullable|string|max:32768',
             'value' => 'required|string',
             'resettable_period' => 'sometimes|integer',
             'resettable_interval' => 'sometimes|in:hour,day,week,month',
