@@ -15,12 +15,6 @@ class SubscriptionsServiceProvider extends PackageServiceProvider
         $package
             ->name('tenant_subscriptions')
             ->hasConfigFile('tenant_subscriptions')
-            ->hasMigrations([
-                'create_plans_table',
-                'create_plan_features_table',
-                'create_plan_subscriptions_table',
-                'create_plan_subscription_usage_table'
-            ])
             ->hasCommands([
                 PublishMigrationCommand::class
             ]);

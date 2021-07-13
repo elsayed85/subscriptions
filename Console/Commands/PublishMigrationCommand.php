@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace elsayed85\Subscriptions\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\File;
 
 class PublishMigrationCommand extends Command
 {
@@ -13,7 +14,7 @@ class PublishMigrationCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'elsayed85:publish-migration {--to : publish to specific folder inside migration folder. default is landlord }';
+    protected $signature = 'elsayed85:publish-migration {--to= : publish to specific folder inside migration folder. default is landlord }';
 
     /**
      * The console command description.
@@ -31,6 +32,16 @@ class PublishMigrationCommand extends Command
     {
         $this->alert($this->description);
 
-        $this->output("to : {$this->option('to')}");
+        $to_path = 'database\migrations';
+        if (!is_null($this->option('to'))) {
+            $to_path .= "\\" . $this->option('to');
+        }
+
+        if (file_exists(base_path($to_path))) {
+            File::copyDirectory(__DIR__ . "/../../database/migrations", base_path($to_path));
+            $this->info('Publishing Is Done');
+        } else {
+            $this->info("Failed To Copy Files");
+        }
     }
 }

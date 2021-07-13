@@ -24,12 +24,12 @@
 
 2. Publish resources (migrations and config files):
     ```shell
-    php artisan vendor:publish --tag=subscriptions-config
+    php artisan vendor:publish --tag=tenant_subscriptions-config
     ```
 
 3. Execute migrations via the following command:
     ```shell
-    php artisan vendor:publish --tag=subscriptions-migrations
+    php artisan vendor:publish --tag=tenant_subscriptions-migrations
     ```
 
 4. Done!
