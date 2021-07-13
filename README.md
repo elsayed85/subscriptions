@@ -27,9 +27,9 @@
     php artisan vendor:publish --tag=tenant_subscriptions-config
     ```
 
-3. Execute migrations via the following command:
+3. Execute migrations via the following command (to : folder inside migrations folder):
     ```shell
-    php artisan vendor:publish --tag=tenant_subscriptions-migrations
+    php artisan elsayed85:publish-migration --to=landlord
     ```
 
 4. Done!

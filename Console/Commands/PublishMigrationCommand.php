@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace elsayed85\Subscriptions\Console\Commands;
 
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 
@@ -30,6 +31,7 @@ class PublishMigrationCommand extends Command
      */
     public function handle(): void
     {
+        $this->line('');
         $this->alert($this->description);
 
         $to_path = 'database\migrations';
@@ -38,8 +40,23 @@ class PublishMigrationCommand extends Command
         }
 
         if (file_exists(base_path($to_path))) {
-            File::copyDirectory(__DIR__ . "/../../database/migrations", base_path($to_path));
-            $this->info('Publishing Is Done');
+            $files =  [
+                'create_plans_table.php',
+                'create_plan_features_table.php',
+                'create_plan_subscriptions_table.php',
+                'create_plan_subscription_usage_table.php'
+            ];
+
+            $now = Carbon::now();
+            foreach ($files as $migrationFileName) {
+                $new_file_name = $now->addSecond()->format('Y_m_d_His') . '_' . $migrationFileName;
+                $this->info('copying ' . $new_file_name);
+                if (file_exists($file = __DIR__ . "/../../database/migrations/{$migrationFileName}")) {
+                    File::copy($file, base_path($to_path . "\\{$new_file_name}"));
+                }
+            }
+            $this->line('');
+            $this->alert('Publishing Is Done');
         } else {
             $this->info("Failed To Copy Files");
         }
