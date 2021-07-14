@@ -113,6 +113,14 @@ class PlanSubscription extends Model
     ];
 
 
+/**
+     * The attributes that are translatable.
+     *
+     * @var array
+     */
+    public $translatable = [
+        'name',
+    ];
 
 
     /**
