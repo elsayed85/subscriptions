@@ -58,6 +58,16 @@ trait HasSubscriptions
     }
 
     /**
+     * Get Main subscription .
+     *
+     * @return \elsayed85\Subscriptions\Models\PlanSubscription|null
+     */
+    public function mainSubscription(): ?PlanSubscription
+    {
+        return $this->subscription(config('tenant_subscriptions.subscriptions.default'));
+    }
+
+    /**
      * Get subscribed plans.
      *
      * @return \elsayed85\Subscriptions\Models\PlanSubscription|null

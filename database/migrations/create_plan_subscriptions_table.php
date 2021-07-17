@@ -15,7 +15,7 @@ class CreatePlanSubscriptionsTable extends Migration
     {
         Schema::create(config('tenant_subscriptions.tables.plan_subscriptions'), function (Blueprint $table) {
             $table->id();
-            $table->morphs('tenant');
+            $table->uuidMorphs('tenant');
             $table->unsignedBigInteger('plan_id');
             $table->string('name');
             $table->string('slug');

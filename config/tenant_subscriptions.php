@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 return [
@@ -17,4 +18,15 @@ return [
         'plan_subscription' => \elsayed85\Subscriptions\Models\PlanSubscription::class,
         'plan_subscription_usage' => \elsayed85\Subscriptions\Models\PlanSubscriptionUsage::class,
     ],
+
+    "features" => [
+        "values" => [
+            'true' => "T",
+            'false' => "F"
+        ]
+    ],
+
+    "subscriptions" => [
+        'default' => 'main'
+    ]
 ];
